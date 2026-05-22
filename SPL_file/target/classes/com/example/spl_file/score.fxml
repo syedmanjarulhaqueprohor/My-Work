@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.spl_file.ScoreController">
+<AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="entryPane" focusTraversable="true" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <children>
+            <ImageView fitHeight="393.0" fitWidth="600.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/Gemini_Generated_Image_9rw9089rw9089rw9.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="strikerInput" layoutX="300.0" layoutY="60.0" />
+            <TextField fx:id="nonStrikerInput" layoutX="300.0" layoutY="101.0" />
+            <TextField fx:id="bowlerInput" layoutX="300.0" layoutY="144.0" />
+            <Label layoutX="234.0" layoutY="62.0" text="Striker">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="219.0" layoutY="104.0" text="Non Striker">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="234.0" layoutY="147.0" text="Bowler">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Button layoutX="300.0" layoutY="193.0" mnemonicParsing="false" onAction="#handleEntry" text="Enter" />
+         </children>
+      </AnchorPane>
+
+    <AnchorPane fx:id="mainScore1" prefHeight="400.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+
+            <VBox spacing="15" style="-fx-padding: 10;">
+
+                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: #2e7d32; -fx-padding: 10;">
+                    <Label fx:id="teamALable" prefHeight="27.0" prefWidth="113.0" style="-fx-text-fill: white; -fx-font-size: 18;" text="Team A" />
+                  <Label fx:id="matchTitle1" layoutX="20.0" layoutY="20.0" style="-fx-text-fill: white; -fx-font-size: 18;" text="VS" />
+                  <Label fx:id="teamBLable" layoutX="20.0" layoutY="20.0" prefHeight="27.0" prefWidth="108.0" style="-fx-text-fill: white; -fx-font-size: 18;" text="Team B" textAlignment="CENTER" />
+                </HBox>
+
+
+                <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;">
+
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <Label fx:id="inningsLabel" text="1st inning" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label prefWidth="31.0" text="CRR" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <Label fx:id="scoreLabel" style="-fx-font-size: 28; -fx-font-weight: bold;" text="0 - 0 (0.0)" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="runRateLabel" text="000.00" />
+                    </HBox>
+                </VBox>
+
+                <VBox prefHeight="119.0" prefWidth="293.0" spacing="5" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;">
+
+                    <HBox spacing="20">
+                        <Label prefHeight="17.0" prefWidth="73.0" text="Batsman" />
+                        <Label prefHeight="17.0" prefWidth="22.0" text="R" />
+                        <Label prefHeight="17.0" prefWidth="15.0" text="B" />
+                        <Label prefHeight="17.0" prefWidth="13.0" text="4s" />
+                        <Label prefHeight="17.0" prefWidth="21.0" text="6s" />
+                        <Label text="SR" />
+                    </HBox>
+
+                    <HBox spacing="20">
+                        <Label fx:id="batsman1Name" prefHeight="17.0" prefWidth="70.0" text="Player 1" />
+                        <Label fx:id="b1Runs" text="000" />
+                        <Label fx:id="b1Balls" text="000" />
+                        <Label fx:id="b1Fours" text="00" />
+                        <Label fx:id="b1Sixes" text="00" />
+                        <Label fx:id="b1SR" text="000.00" />
+                    </HBox>
+
+                    <HBox spacing="20">
+                        <Label fx:id="batsman2Name" prefHeight="17.0" prefWidth="69.0" text="Player 2" />
+                        <Label fx:id="b2Runs" text="000" />
+                        <Label fx:id="b2Balls" text="000" />
+                        <Label fx:id="b2Fours" text="00" />
+                        <Label fx:id="b2Sixes" text="00" />
+                        <Label fx:id="b2SR" text="000.00" />
+                    </HBox>
+
+                    <HBox spacing="20" style="-fx-padding-top: 10;">
+                        <Label prefHeight="17.0" prefWidth="73.0" text="Bowler " />
+                        <Label prefHeight="17.0" prefWidth="11.0" text="O" />
+                     <Label prefHeight="17.0" prefWidth="14.0" text="R" />
+                        <Label prefHeight="17.0" prefWidth="18.0" text="W" />
+                        <Label text="ER" />
+                    </HBox>
+                    <HBox layoutX="20.0" layoutY="88.0" spacing="20" style="-fx-padding-top: 10;">
+                        <children>
+                            <Label fx:id="bowlerName" prefHeight="17.0" prefWidth="73.0" text="Player" />
+                            <Label fx:id="bowlerOver" text="00" />
+                            <Label fx:id="bowlerRuns" text="000" />
+                            <Label fx:id="bowlerWicket" text="00" />
+                            <Label fx:id="bowlerER" text="00.00" />
+                        </children>
+                    </HBox>
+
+                </VBox>
+
+            </VBox>
+
+            <HBox layoutX="11.0" layoutY="309.0" prefHeight="37.0" prefWidth="180.0" spacing="8" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;">
+                <Label text="This over:" />
+                <Label fx:id="ball1" text="0" />
+                <Label fx:id="ball2" text="0" />
+                <Label fx:id="ball3" text="0" />
+                <Label fx:id="ball4" text="0" />
+                <Label fx:id="ball5" text="0" />
+                <Label fx:id="ball6" text="0" />
+            </HBox>
+            <TextField fx:id="newBowlerName" layoutX="12.0" layoutY="361.0" prefHeight="25.0" prefWidth="180.0" promptText="New Bowler Name" visible="false" />
+            <Button fx:id="newBowlerBtn" layoutX="214.0" layoutY="361.0" mnemonicParsing="false" onAction="#newBowler" prefHeight="25.0" prefWidth="73.0" text="Enter " visible="false" />
+        </children></AnchorPane>
+
+    <AnchorPane fx:id="mainScore2" layoutX="307.3333333333333" layoutY="1.3333333333333333" prefHeight="400.0" prefWidth="300.0" stylesheets="@../../../style.css" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="307.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+        <children>
+            <VBox layoutX="10.0" layoutY="11.0" prefHeight="122.0" prefWidth="273.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;">
+                <children>
+                    <HBox prefHeight="39.0" prefWidth="281.0" spacing="20.0">
+                        <children>
+                            <CheckBox mnemonicParsing="false" onAction="#setExtraWide" text="Wide" />
+                            <CheckBox mnemonicParsing="false" onAction="#setExtraNoBall" text="No Ball" />
+                            <CheckBox mnemonicParsing="false" onAction="#setExtraByes" text="Byes" />
+                        </children>
+                    </HBox>
+                    <HBox prefHeight="45.0" prefWidth="293.0" spacing="10.0">
+                        <children>
+                            <Button mnemonicParsing="false" onAction="#handleWicket" styleClass="login-btn" stylesheets="@../../../style.css" text="Wicket" />
+                            <Button mnemonicParsing="false" onAction="#handleRetire" styleClass="login-btn" stylesheets="@../../../style.css" text="Retire" />
+                        </children>
+                    </HBox>
+                  <HBox layoutX="20.0" layoutY="55.0" prefHeight="45.0" prefWidth="293.0" spacing="15.0">
+                     <children>
+                        <TextField fx:id="newBatsmanField" prefHeight="35.0" prefWidth="154.0" promptText="New Batsman Name" visible="false" />
+                        <Button fx:id="newBatsmanBtn" lineSpacing="10.0" mnemonicParsing="false" onAction="#enterNewBatsman" prefHeight="30.0" prefWidth="61.0" text="Enter " visible="false" />
+                     </children>
+                  </HBox>
+                </children>
+            </VBox>
+            <VBox layoutX="10.0" layoutY="138.0" prefHeight="141.0" prefWidth="109.0" spacing="15.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;">
+                <children>
+                    <Button mnemonicParsing="false" onAction="#undoLastBall" styleClass="login-btn" stylesheets="@../../../style.css" text="Undo Runs" />
+                    <Button fx:id="partnershipBtn" mnemonicParsing="false" onAction="#partnership" styleClass="login-btn" stylesheets="@../../../style.css" text="Partnership" />
+                    <Button layoutX="10.0" layoutY="39.0" mnemonicParsing="false" onAction="#showExtra" styleClass="login-btn" stylesheets="@../../../style.css" text=" Extra Runs" />
+                </children>
+            </VBox>
+            <GridPane layoutX="130.0" layoutY="138.0" prefHeight="141.0" prefWidth="136.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Button mnemonicParsing="false" onAction="#run1" text="1 run" />
+                    <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#run2" text="2 run" GridPane.columnIndex="1" />
+                    <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#run3" text="3 run" GridPane.columnIndex="2" />
+                    <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#run4" text="4 run" GridPane.rowIndex="1" />
+                    <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#run5" text="5 run" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Button layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#run6" text="6 run" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#run0" text="0 run" GridPane.rowIndex="2" />
+                </children>
+            </GridPane>
+            <TextField fx:id="extraRunField" layoutX="16.0" layoutY="361.0" promptText="Extra run" visible="false" />
+            <Button layoutX="176.0" layoutY="319.0" mnemonicParsing="false" onAction="#finishInnings" styleClass="login-btn" stylesheets="@../../../style.css" text="Innings End" />
+            <Button layoutX="174.0" layoutY="359.0" mnemonicParsing="false" onAction="#showData" styleClass="login-btn" stylesheets="@../../../style.css" text="Innings Data" />
+            <TextField fx:id="partnershipLabel" layoutX="16.0" layoutY="321.0" promptText="Partnership" visible="false" />
+        </children>
+
+    </AnchorPane>
+</AnchorPane>
+
+</StackPane>

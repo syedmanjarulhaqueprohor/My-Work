@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="526.0" styleClass="white-form" stylesheets="@../../../style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.spl_file.TossAndPlayerInputController">
+
+<children>
+
+    <AnchorPane fx:id="PlayerFrom" prefHeight="402.0" prefWidth="275.0" styleClass="gradient" stylesheets="@../../../style.css">
+
+        <children>
+            <ImageView fitHeight="402.0" fitWidth="323.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/Main1.png" />
+               </image>
+            </ImageView>
+            <ListView fx:id="teamAList" layoutX="20.0" layoutY="85.0" prefHeight="202.0" prefWidth="100" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;" />
+            <ListView fx:id="teamBList" layoutX="143.0" layoutY="85.0" prefHeight="202.0" prefWidth="100" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 8;" />
+
+            <TextField fx:id="playerInput" layoutX="20.0" layoutY="301.0" prefHeight="25.0" prefWidth="221.0" promptText="Enter player name" />
+
+            <Button fx:id="addPlayer" layoutX="20.0" layoutY="346.0" onAction="#addPlayer" styleClass="login-btn" text="Add Player" />
+
+            <Button fx:id="removePlayer" layoutX="138.0" layoutY="346.0" onAction="#removePlayer" styleClass="login-btn" text="Remove Player" />
+
+            <Label fx:id="teamAname" layoutX="50.0" layoutY="56.0" text="Team A">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label fx:id="teamBname" layoutX="173.0" layoutY="56.0" text="Team B">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+
+            <Label layoutX="68.0" layoutY="17.0" styleClass="head-label" text="Player's Name">
+                <font>
+                    <Font size="20" />
+                </font>
+            </Label>
+
+        </children>
+    </AnchorPane>
+
+    <AnchorPane fx:id="TossFrom" layoutX="275.0" prefHeight="402.0" prefWidth="267.0" styleClass="gradient" stylesheets="@../../../style.css">
+
+        <children>
+            <ImageView fitHeight="402.0" fitWidth="271.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../Users/LLB/OneDrive/Pictures/Colorbatsman.png" />
+               </image></ImageView>
+
+            <Label layoutX="13.0" layoutY="75.0" text="Toss Winner" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="16.0" />
+                </font></Label>
+
+            <ComboBox fx:id="tossWinner" layoutX="112.0" layoutY="71.0" prefHeight="25.0" prefWidth="135.0" />
+
+            <Label layoutX="23.0" layoutY="115.0" text="Choose" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="16.0" />
+                </font></Label>
+
+            <RadioButton fx:id="batRadio" layoutX="111.0" layoutY="115.0" text="Bat" textFill="WHITE">
+                <toggleGroup>
+                    <ToggleGroup fx:id="group" />
+                </toggleGroup>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </RadioButton>
+
+            <RadioButton fx:id="ballRadio" layoutX="190.0" layoutY="115.0" text="Ball" textFill="WHITE" toggleGroup="$group">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></RadioButton>
+
+            <Button layoutX="12.0" layoutY="201.0" onAction="#ConfirmBtn" styleClass="login-btn" text="Confirm Toss" />
+
+            <Button fx:id="startMatch" layoutX="145.0" layoutY="201.0" onAction="#StartBtn" styleClass="login-btn" text="Start Match" visible="false" />
+            <Label layoutX="75.0" layoutY="21.0" text="Toss Section" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="22.0" />
+                </font>
+            </Label>
+
+        </children>
+    </AnchorPane>
+
+</children>
+</AnchorPane>

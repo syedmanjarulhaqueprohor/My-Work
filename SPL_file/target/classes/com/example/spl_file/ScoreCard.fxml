@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="gradient" stylesheets="@../../../style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.spl_file.ScoreCardController">
+<children>
+    <HBox layoutX="1.0" layoutY="42.0" prefHeight="358.0" prefWidth="600.0">
+        <children>
+
+            <TableView fx:id="batsmanTable" prefHeight="358.0" prefWidth="300.0">
+                <columns>
+                    <TableColumn fx:id="colBatName" prefWidth="83.33334612846375" text="Batsman" />
+                    <TableColumn fx:id="colRuns" prefWidth="43.99999237060547" text="R" />
+                    <TableColumn fx:id="colBalls" prefWidth="37.999969482421875" text="B" />
+                    <TableColumn fx:id="colFours" prefWidth="37.33331298828125" text="4s" />
+                    <TableColumn fx:id="colSixes" prefWidth="35.3333740234375" text="6s" />
+                    <TableColumn fx:id="colSR" minWidth="4.66668701171875" prefWidth="64.66670227050781" text="SR" />
+                </columns>
+            </TableView>
+
+            <TableView fx:id="bowlerTable" prefHeight="358.0" prefWidth="300.0">
+                <columns>
+                    <TableColumn fx:id="colBowlName" prefWidth="93.33331298828125" text="Bowler" />
+                    <TableColumn fx:id="colOvers" prefWidth="41.3333740234375" text="O" />
+                    <TableColumn fx:id="colRunsGiven" prefWidth="46.66668701171875" text="R" />
+                    <TableColumn fx:id="colWickets" prefWidth="49.333282470703125" text="W" />
+                    <TableColumn fx:id="colER" prefWidth="68.66668701171875" text="ER" />
+                </columns>
+            </TableView>
+
+        </children>
+    </HBox>
+      <Label fx:id="teamALable" layoutX="62.0" layoutY="2.0" prefHeight="42.0" prefWidth="147.0" text="Team A" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="524.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleNextButton" text="Next">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="teamBLable" layoutX="360.0" layoutY="2.0" prefHeight="42.0" prefWidth="147.0" text="Team B" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+</children>
+</AnchorPane>

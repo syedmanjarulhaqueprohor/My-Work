@@ -1,0 +1,7 @@
+1,BBaria,Cumilla,T-20,20
+2,Bbaria,Noakhali,Customs,2
+3,BBaria,Cumilla,Customs,1
+4,Bbaria,Cumilla,Customs,2
+5,Bbaria,Sylhet,Customs,2
+6,Bbaria,Rangpur,Customs,1
+7,Bbaria,Rangpur,Customs,1
