@@ -1,5 +1,3 @@
-package ProjectLab;
-
 import java.util.*;
 class Crime {
     private String type;
