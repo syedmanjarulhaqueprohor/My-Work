@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.numerical.controller.MainController"
+           styleClass="root-pane"
+           >
+
+    <VBox styleClass="app-container" spacing="0">
+
+        <!-- ══ TOP BAR ══ -->
+        <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="12">
+            <Label text="NumeriCalc" styleClass="app-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="MODE:" styleClass="mode-label"/>
+            <ComboBox fx:id="modeSelector" styleClass="mode-combo" onAction="#onModeChanged"/>
+        </HBox>
+
+        <!-- ══ DISPLAY ══ -->
+        <VBox styleClass="display-area" spacing="4">
+            <Label fx:id="expressionLabel" text="" styleClass="expression-display" maxWidth="Infinity"/>
+            <Label fx:id="resultLabel" text="0" styleClass="result-display" maxWidth="Infinity"/>
+        </VBox>
+
+        <!-- ══ CONTENT SWITCHER ══ -->
+        <StackPane VBox.vgrow="ALWAYS">
+
+            <!-- ── Standard Calculator Buttons ── -->
+            <VBox fx:id="standardPane" spacing="6" styleClass="button-pane">
+                <!-- Row 0: utility -->
+                <HBox spacing="6">
+                    <Button text="AC"  styleClass="btn btn-utility" onAction="#onClearAll"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="+/-" styleClass="btn btn-utility" onAction="#onNegate"    HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="\%"   styleClass="btn btn-utility" onAction="#onPercent"   HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="÷"   styleClass="btn btn-operator" onAction="#onOperator" userData="/" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <!-- Row 1 -->
+                <HBox spacing="6">
+                    <Button text="7" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="8" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="9" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="×" styleClass="btn btn-operator" onAction="#onOperator" userData="*" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <!-- Row 2 -->
+                <HBox spacing="6">
+                    <Button text="4" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="5" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="6" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="−" styleClass="btn btn-operator" onAction="#onOperator" userData="-" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <!-- Row 3 -->
+                <HBox spacing="6">
+                    <Button text="1" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="2" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="3" styleClass="btn btn-digit" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="+" styleClass="btn btn-operator" onAction="#onOperator" userData="+" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <!-- Row 4 -->
+                <HBox spacing="6">
+                    <Button text="0"   styleClass="btn btn-digit,btn-zero" onAction="#onDigit" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="."   styleClass="btn btn-digit"           onAction="#onDot"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="⌫"   styleClass="btn btn-utility"         onAction="#onBackspace" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="="   styleClass="btn btn-equals"          onAction="#onEquals" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <!-- Scientific Row -->
+                <HBox spacing="6">
+                    <Button text="sin"  styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="cos"  styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="tan"  styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="ln"   styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+                <HBox spacing="6">
+                    <Button text="√"    styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="x²"   styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="xⁿ"   styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="1/x"  styleClass="btn btn-sci" onAction="#onSci" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+            </VBox>
+
+            <!-- ── Numerical Methods Pane ── -->
+            <VBox fx:id="numericalPane" visible="false" managed="false" spacing="10" styleClass="numerical-pane">
+
+                <!-- Sub-mode tabs -->
+                <HBox styleClass="tab-bar" spacing="4">
+                    <Button fx:id="tabDirect"   text="Direct Interp." styleClass="tab-btn,tab-active" onAction="#onTabSelect"/>
+                    <Button fx:id="tabLagrange" text="Lagrange"       styleClass="tab-btn"            onAction="#onTabSelect"/>
+                    <Button fx:id="tabS13"      text="Simp. 1/3"      styleClass="tab-btn"            onAction="#onTabSelect"/>
+                    <Button fx:id="tabS38"      text="Simp. 3/8"      styleClass="tab-btn"            onAction="#onTabSelect"/>
+                    <Button fx:id="tabEuler"    text="Euler"          styleClass="tab-btn"            onAction="#onTabSelect"/>
+                    <Button fx:id="tabError"    text="Error"          styleClass="tab-btn"            onAction="#onTabSelect"/>
+                </HBox>
+
+                <!-- Dynamic form area -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="form-scroll">
+                    <VBox fx:id="formArea" spacing="10" styleClass="form-area"/>
+                </ScrollPane>
+
+                <!-- Output -->
+                <TextArea fx:id="outputArea" styleClass="output-area" editable="false"
+                          prefRowCount="8" wrapText="true" VBox.vgrow="NEVER"/>
+
+                <!-- Solve button -->
+                <Button text="⚙  SOLVE" styleClass="btn,btn-solve" onAction="#onSolve"
+                        maxWidth="Infinity"/>
+            </VBox>
+
+        </StackPane>
+    </VBox>
+</StackPane>
