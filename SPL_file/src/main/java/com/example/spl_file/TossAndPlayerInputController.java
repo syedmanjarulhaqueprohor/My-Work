@@ -57,7 +57,7 @@ public class TossAndPlayerInputController{
     private ObservableList<String> teamBPlayers = FXCollections.observableArrayList();
 
     private String selectedTeam = null;
-
+    private String tossWinnerTeam = null;
     @FXML
     public void initialize() {
         loadTeamsFromFile();
@@ -69,7 +69,7 @@ public class TossAndPlayerInputController{
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Toss Result");
+        alert.setTitle("Information");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
@@ -85,8 +85,8 @@ public class TossAndPlayerInputController{
         List<String []> match= matchFile.getMatch();
         if(!match.isEmpty()){
             String[] last=match.get(match.size()-1);
-            String teamA=last[0];
-            String teamB=last[1];
+            String teamA=last[1];
+            String teamB=last[2];
             setTeamNames(teamA,teamB);
         }
     }
@@ -95,10 +95,13 @@ public class TossAndPlayerInputController{
         teamBname.setText(teamBName);
         tossWinner.setItems(FXCollections.observableArrayList(teamAName, teamBName));
     }
-
+    private int matchId;
+    public void setMatchId(int matchId) {
+        this.matchId = matchId;
+    }
     public void ConfirmBtn(ActionEvent event) {
-        selectedTeam=tossWinner.getValue();
-        if(selectedTeam==null){
+        tossWinnerTeam=tossWinner.getValue();
+        if(tossWinnerTeam==null){
             System.out.println("Please select toss winner");
             return;
         }
@@ -120,10 +123,6 @@ public class TossAndPlayerInputController{
         String name=playerInput.getText().trim();
         if(name.isEmpty()){
             showAlert("Enter player name");
-            return;
-        }
-        if(teamAPlayers.contains(name)||teamBPlayers.contains(name)){
-            showAlert("Player already exist");
             return;
         }
         if(selectedTeam==null){
@@ -156,26 +155,61 @@ public class TossAndPlayerInputController{
         if(A!=null){
             teamAPlayers.remove(A);
             deletePlayerFromFile(A,teamAname.getText());
+            teamAList.getSelectionModel().clearSelection();
         }
-        else {
+        else if(B!=null){
             teamBPlayers.remove(B);
             deletePlayerFromFile(B,teamBname.getText());
+            teamBList.getSelectionModel().clearSelection();
+        }
+        else{
+            showAlertError("Select a player");
         }
     }
     public void deletePlayerFromFile(String playerName,String teamName){
         TossFile.removePlayer(matchId,playerName,teamName);
     }
-    private int matchId;
-    public void setMatchId(int matchId) {
-        this.matchId = matchId;
-    }
     public void StartBtn() throws IOException {
+        if(teamAPlayers.isEmpty()||teamBPlayers.isEmpty()){
+            showAlertError("Both team must have at least two player");
+            return;
+        }
+        List<String> firstBatting;
+        List<String> firstBowling;
+        if (batRadio.isSelected()) {
+            if (tossWinnerTeam.equals(teamAname.getText())) {
 
+                firstBatting = teamAPlayers;
+                firstBowling = teamBPlayers;
+
+            } else {
+                firstBatting = teamBPlayers;
+                firstBowling = teamAPlayers;
+            }
+
+        } else {
+            if (tossWinnerTeam.equals(teamAname.getText())) {
+                firstBatting = teamBPlayers;
+                firstBowling = teamAPlayers;
+
+            } else {
+                firstBatting = teamAPlayers;
+                firstBowling = teamBPlayers;
+            }
+        }
+        List<String> secondBatting = firstBowling;
+        List<String> secondBowling = firstBatting;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("score.fxml"));
         Parent root = loader.load();
         ScoreController controller = loader.getController();
         controller.setMatchId(matchId);
         controller.setTeamNames(teamAname.getText(), teamBname.getText());
+        controller.setAllPlayerLists(
+                firstBatting,
+                firstBowling,
+                secondBatting,
+                secondBowling
+        );
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setTitle("Cricket Score App");
@@ -183,5 +217,5 @@ public class TossAndPlayerInputController{
         stage.setMinHeight(400);
         stage.setScene(scene);
         stage.show();
-    }
-}
+    }}
+
