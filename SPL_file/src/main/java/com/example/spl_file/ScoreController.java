@@ -4,22 +4,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
+
 
 public class ScoreController {
 
@@ -99,7 +93,7 @@ public class ScoreController {
     @FXML private TextField extraRunField;
 
     @FXML
-    private TextField newBowlerName;
+    private ComboBox<String> newBowlerName;
 
     @FXML
     private Button newBowlerBtn;
@@ -108,7 +102,7 @@ public class ScoreController {
     private Button newBatsmanBtn;
 
     @FXML
-    private TextField newBatsmanField;
+    private ComboBox<String> newBatsmanField;
 
     @FXML
     private Button partnershipBtn;
@@ -122,8 +116,18 @@ public class ScoreController {
     @FXML
     private AnchorPane mainScore2;
 
-    @FXML private TextField strikerInput, nonStrikerInput, bowlerInput;
+    @FXML
+    private ComboBox<String> nonStrikerInput;
 
+    @FXML
+    private ComboBox<String> strikerInput;
+
+    @FXML
+    private ComboBox<String> bowlerInput;
+
+    private List<String> battingPlayers;
+    private List<String> bowlingPlayers;
+    private List<String> availableBatsmen = new ArrayList<>();
     private int totalRuns=0;
     private int wickets=0;
     private int currentOver=0;
@@ -143,8 +147,10 @@ public class ScoreController {
     private List<Bowler> innings1Bowlers = new ArrayList<>();
     private List<Player> innings2Batsmen = new ArrayList<>();
     private List<Bowler> innings2Bowlers = new ArrayList<>();
-   // private Label teamAname;
-   // private Label teamBname;
+    private List<String> firstInningsBatting;
+    private List<String> firstInningsBowling;
+    private List<String> secondInningsBatting;
+    private List<String> secondInningsBowling;
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -160,7 +166,33 @@ public class ScoreController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    public void setAllPlayerLists(
+            List<String> firstBatting,
+            List<String> firstBowling,
+            List<String> secondBatting,
+            List<String> secondBowling) {
+        this.firstInningsBatting = firstBatting;
+        this.firstInningsBowling = firstBowling;
+        this.secondInningsBatting = secondBatting;
+        this.secondInningsBowling = secondBowling;
+        this.battingPlayers = firstBatting;
+        this.bowlingPlayers = firstBowling;
 
+        availableBatsmen.clear();
+        availableBatsmen.addAll(firstBatting);
+
+        strikerInput.getItems().clear();
+        nonStrikerInput.getItems().clear();
+        bowlerInput.getItems().clear();
+
+        strikerInput.getItems().addAll(firstBatting);
+        nonStrikerInput.getItems().addAll(firstBatting);
+
+        bowlerInput.getItems().addAll(firstBowling);
+
+        newBowlerName.getItems().clear();
+        newBowlerName.getItems().addAll(firstBowling);
+    }
     private int matchId;
     private String teamAName;
     private String teamBName;
@@ -170,21 +202,22 @@ public class ScoreController {
 
     @FXML
     public void handleEntry() {
-        String sName = strikerInput.getText().trim();
-        String nsName = nonStrikerInput.getText().trim();
-        String bName = bowlerInput.getText().trim();
-        if (sName.isEmpty() || nsName.isEmpty() || bName.isEmpty()) {
-            showAlert("Sab field fill-up korun!");
+        String sName = strikerInput.getValue();
+        String nsName = nonStrikerInput.getValue();
+        String bName = bowlerInput.getValue();
+        if (sName==null || nsName==null || bName==null) {
+            showAlertError("Sab field fill-up korun!");
             return;
         }
         if (sName.equalsIgnoreCase(nsName)) {
-            showAlert("Striker and Non-Striker cannot be the same person!");
+            showAlertError("Striker and Non-Striker cannot be the same person!");
             return;
         }
-        if (isValidPlayerFromToss(sName) && isValidPlayerFromToss(nsName)) {
             striker = new Player(sName);
             nonStriker = new Player(nsName);
             currentBowler = new Bowler(bName);
+            availableBatsmen.remove(sName);
+            availableBatsmen.remove(nsName);
             if (inningsCounter == 1) {
                 currentOverNum = 0;
                 innings1Batsmen.add(striker);
@@ -201,30 +234,8 @@ public class ScoreController {
             mainScore1.setVisible(true);
             mainScore2.setVisible(true);
             updateUI();
-        } else {
-            showAlert("Player name does not match");
-        }
     }
-    private boolean isValidPlayerFromToss(String name) {
-        try{
-            BufferedReader bufferedReader =new BufferedReader(new FileReader("Name.txt"));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-                String[] parts = line.split(",");
-                if (parts.length >= 2) {
-                    String playerNameFromFile = parts[1].trim();
-                    if (playerNameFromFile.equalsIgnoreCase(name.trim())) {
-                        return true;
-                    }
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return false;
-    }
+
     public void setTeamNames(String teamAName,String teamBName){
         this.teamAName=teamAName;
         this.teamBName=teamBName;
@@ -308,20 +319,23 @@ public class ScoreController {
     private void overComplete() {
         if (currentOverObj.getLegalBalls() >= 6) {
             rotateStrike();
+            resetOverUI();
             newBowlerName.setVisible(true);
             newBowlerBtn.setVisible(true);
             showAlert("Over Complete! Please enter the next bowler's name.");
-            resetOverUI();
         }
     }
     @FXML
     public void newBowler() {
-        String name = newBowlerName.getText().trim();
-        if (name.isEmpty()) {
+        String name = newBowlerName.getValue();
+        if (name==null||name.isBlank()) {
             showAlert("Please enter a Bowler Name!");
             return;
         }
-        if (isValidPlayerFromToss(name)) {
+        if (currentBowler.getName().equalsIgnoreCase(name)) {
+            showAlert("Same bowler cannot bowl consecutive overs!");
+            return;
+        }
             currentOverNum++;
             List<Bowler> currentInningsBowlers = (inningsCounter == 1) ? innings1Bowlers : innings2Bowlers;
             Bowler existingBowler = null;
@@ -341,13 +355,10 @@ public class ScoreController {
             }
             currentOverObj = new Over(currentOverNum);
             BowlerFile.saveBowler(matchId, name);
-            newBowlerName.clear();
+            newBowlerName.setValue(null);
             newBowlerName.setVisible(false);
             newBowlerBtn.setVisible(false);
             updateUI();
-        } else {
-            showAlert("Please enter a valid Bowler Name");
-        }
     }
     private void rotateStrike() {
         Player temp = striker;
@@ -427,10 +438,14 @@ public class ScoreController {
         }
         extraRunField.setVisible(false);
     }
+
     @FXML
     public void handleRetire() {
-        partnershipRun=0;
+        partnershipRun = 0;
         retiredPlayers.add(striker);
+        availableBatsmen.remove(striker.getName());
+        newBatsmanField.getItems().clear();
+        newBatsmanField.getItems().addAll(availableBatsmen);
         showAlert(striker.getName() + " retired hurt. He can return after 9 wickets.");
         showNewBatsmanUI(true);
     }
@@ -444,36 +459,40 @@ public class ScoreController {
                 striker.getName(), currentBowler.getName());
         currentOverObj.addBall(wicketBall);
         BallFile.saveBall(matchId, wicketBall);
+        newBatsmanField.getItems().clear();
+        newBatsmanField.getItems().addAll(availableBatsmen);
+        if (newBatsmanField.getItems().isEmpty()) {
+            finishInnings();
+            return;
+        }
         showNewBatsmanUI(true);
-        overComplete();
         updateOverUI("W");
+        overComplete();
         updateUI();
     }
     private void showNewBatsmanUI(boolean visible) {
         newBatsmanField.setVisible(visible);
         newBatsmanBtn.setVisible(visible);
     }
-@FXML
-public void enterNewBatsman(){
-    String nextName = newBatsmanField.getText().trim();
-
-    if (!nextName.isEmpty()) {
-        striker = new Player(nextName);
-        if (inningsCounter == 1) {
-            innings1Batsmen.add(striker);
-        } else {
-            innings2Batsmen.add(striker);
+    @FXML
+    public void enterNewBatsman() {
+        String nextName = newBatsmanField.getValue();
+        if (nextName != null && !nextName.isBlank()) {
+            striker = new Player(nextName);
+            availableBatsmen.remove(nextName);
+            if (inningsCounter == 1) {
+                innings1Batsmen.add(striker);
+            } else {
+                innings2Batsmen.add(striker);
+            }
+            newBatsmanField.setValue(null);
+            showNewBatsmanUI(false);
+            LiveStatsFile.updatePlayerStats(matchId, inningsCounter, currentBattingTeam, striker);
+           } else {
+            checkAndBringBackRetiredPlayer();
         }
-        newBatsmanField.clear();
-        showNewBatsmanUI(false);
-        LiveStatsFile.updatePlayerStats(matchId, inningsCounter, currentBattingTeam, striker);
-
-        System.out.println("DEBUG: Batsman [" + nextName + "] added to activeBatsmenList.");
-    } else {
-        checkAndBringBackRetiredPlayer();
+        updateUI();
     }
-    updateUI();
-}
     private void checkAndBringBackRetiredPlayer() {
         if (wickets >= 9 && !retiredPlayers.isEmpty()) {
             striker = retiredPlayers.remove(0);
@@ -483,6 +502,7 @@ public void enterNewBatsman(){
             finishInnings();
         }
     }
+
     @FXML
     public void finishInnings() {
         if (inningsCounter < maxInnings) {
@@ -493,12 +513,27 @@ public void enterNewBatsman(){
             currentOverNum = 0; partnershipRun = 0;
             currentOverObj = new Over(0);
             retiredPlayers.clear();
+            resetOverUI();
             mainScore1.setVisible(false);
             mainScore2.setVisible(false);
             entryPane.setVisible(true);
-            strikerInput.clear();
-            nonStrikerInput.clear();
-            bowlerInput.clear();
+            battingPlayers = secondInningsBatting;
+            bowlingPlayers = secondInningsBowling;
+            availableBatsmen.clear();
+            availableBatsmen.addAll(secondInningsBatting);
+            strikerInput.getItems().clear();
+            nonStrikerInput.getItems().clear();
+            bowlerInput.getItems().clear();
+            strikerInput.getItems().addAll(secondInningsBatting);
+            nonStrikerInput.getItems().addAll(secondInningsBatting);
+            bowlerInput.getItems().addAll(secondInningsBowling);
+            newBowlerName.getItems().clear();
+            newBowlerName.getItems().addAll(secondInningsBowling);
+            strikerInput.setValue(null);
+            nonStrikerInput.setValue(null);
+            bowlerInput.setValue(null);
+            newBatsmanField.setValue(null);
+            newBowlerName.setValue(null);
             updateUI();
         } else {
             showAlert("Match Finished! Check ScoreCard.");
@@ -614,4 +649,3 @@ public void enterNewBatsman(){
         updateUI();
     }
 }
-
